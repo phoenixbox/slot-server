@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150913013847) do
+ActiveRecord::Schema.define(version: 20150913193922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "authentications", force: :cascade do |t|
     t.string   "uid",        null: false
@@ -29,6 +30,20 @@ ActiveRecord::Schema.define(version: 20150913013847) do
 
   add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
+  create_table "facebook_profiles", force: :cascade do |t|
+    t.string   "uid",               null: false
+    t.string   "username"
+    t.string   "display_name",      null: false
+    t.string   "email",             null: false
+    t.integer  "authentication_id", null: false
+    t.string   "token",             null: false
+    t.hstore   "raw"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "facebook_profiles", ["raw"], name: "index_facebook_profiles_on_raw", using: :gin
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",       null: false
     t.string   "encrypted_password",     default: "",       null: false
@@ -40,6 +55,9 @@ ActiveRecord::Schema.define(version: 20150913013847) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.integer  "failed_attempts",        default: 0,        null: false
+    t.string   "unlock_token"
+    t.datetime "locked_at"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.string   "display_name"
