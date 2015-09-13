@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   validates :display_name, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
 
+  # Associations
+  has_many :authentications
+
   def self.from_omniauth(params)
     password = Devise.friendly_token[0,20]
     user = User.create!({
