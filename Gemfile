@@ -9,6 +9,9 @@ gem "puma"
 gem 'devise', '~> 3.5.1'
 gem 'simple_enum', '~> 2.1.1'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'jquery-rails'
+gem 'jquery-rails'
+gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
   gem 'faker'
